@@ -31,29 +31,31 @@ last_detected_time = {}
 prev_gray = None
 video_capture = None
 
+from dotenv import load_dotenv
 
-# Twilio credentials
-TWILIO_ACCOUNT_SID = "AC25d805c39b7334716de6e686585fe65e"
-TWILIO_AUTH_TOKEN = "81f834f1471af05b5ef9d401511e4039"
-TWILIO_PHONE = "+16467605071"
-ALERT_PHONE = "+918766830188"
-TWILIO_SMS = "+16467605071"
-ALERT_SMS = "+918766830188"
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Accessing environment variables
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE = os.getenv("TWILIO_PHONE")
+ALERT_PHONE = os.getenv("ALERT_PHONE")
+TWILIO_SMS = os.getenv("TWILIO_SMS")
+ALERT_SMS = os.getenv("ALERT_SMS")
+CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME")
+CLOUDINARY_API_KEY = os.getenv("CLOUDINARY_API_KEY")
+CLOUDINARY_API_SECRET = os.getenv("CLOUDINARY_API_SECRET")
+MAILGUN_DOMAIN = os.getenv("MAILGUN_DOMAIN")
+MAILGUN_API_KEY = os.getenv("MAILGUN_API_KEY")
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+RECIPIENT_EMAIL =os.getenv("RECIPIENT_EMAIL")
+MONGO_URI = os.getenv("MONGO_URI")
 
 # Initialize Twilio client
 twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-cloudinary.config(
-    cloud_name="dcvsavnx3",
-    api_key="399294449426652",
-    api_secret="7ZJuKbNHl0KsWPMAcKb4OWDH-j8"
-)
-
-# Mailgun API Credentials
-MAILGUN_DOMAIN = "sandbox963745399947467e80086c44142a1697.mailgun.org"
-MAILGUN_API_KEY = "98ed24216c0e33944a27d0946c813059-ac3d5f74-ad3a53e6"  # Your actual API key
-SENDER_EMAIL = f"mailgun@{MAILGUN_DOMAIN}"
-RECIPIENT_EMAIL = "harshalborkar501@gmail.com"
 
 def send_email_with_image(image_path,subject="⚠️ Suspicious Activity Detected!", message="Suspicious activity detected. See the attached image."):
     with open(image_path, "rb") as image_file:
@@ -76,7 +78,7 @@ def send_email_with_image(image_path,subject="⚠️ Suspicious Activity Detecte
 
 
 # MongoDB credentials
-MONGO_URI = "mongodb+srv://alhanmsiddique:jU0FQ5M89o3hlL1w@cluster0.o7nko.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_URI = os.getenv("MONGO_URI")
 DB_NAME = "test"
 COLLECTION_NAME = "listings"
 
@@ -84,6 +86,7 @@ client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
 collection = db[COLLECTION_NAME]
 documents=collection.find()
+
 
 for doc in documents:
     Title=doc.get("title")
